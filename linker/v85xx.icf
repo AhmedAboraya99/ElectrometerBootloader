@@ -1,0 +1,38 @@
+/* v85xx.icf for Vango V85XX (256 KB Flash, 32 KB SRAM) */
+
+/* Define memory block covering Flash and SRAM */
+define memory MEMORY_ALL with size = 0x40000000;
+
+/* Define memory regions per V85XX memory map */
+define region FLASH_region = MEMORY_ALL:[from 0x00000000 to 0x0003FFFF] | 
+                            MEMORY_ALL:[from 0x00040000 to 0x00040FFF] | 
+                            MEMORY_ALL:[from 0x000FFF00 to 0x000FFFFF]; /* 256 KB Flash, 4 KB FLASH_NVR, 256 B FLASH */
+define region SRAM_region = MEMORY_ALL:[from 0x20000000 to 0x20007FFF]; /* 32 KB SRAM */
+define region SRAM_BITBAND_region = MEMORY_ALL:[from 0x22000000 to 0x220FFFFF]; /* 1 MB SRAM Bit-Band */
+
+/* Define stack and heap sizes */
+define symbol __CSTACK_SIZE__ = 0x800; /* 2 KB stack for metering */
+define symbol __HEAP_SIZE__ = 0x400; /* 1 KB heap for data buffering */
+
+/* Program entry point */
+//define symbol __iar_program_start = bootloader_main;
+
+/* Place vector table at Flash start */
+place at address 0x00000000 { section .intvec };
+
+/* Place sections for bootloader, jump table, core app, and fetched code */
+place at address 0x00000000 { section .bootloader };
+place at address 0x00001000 { section .jump_table };
+place at address 0x00001100 { section .core_app };
+place at address 0x00002000 { section .fetched_code };
+
+/* Place code and read-only data in Flash */
+place in FLASH_region { readonly, section .text, section .rodata };
+
+/* Place initialized data, uninitialized data, stack, and heap in SRAM */
+initialize by copy { section .data };
+do not initialize { section .bss };
+define block CSTACK with alignment = 8, size = __CSTACK_SIZE__ { };
+place in SRAM_region { readwrite, block CSTACK };
+define block HEAP with alignment = 8, size = __HEAP_SIZE__ { };
+place in SRAM_region { block HEAP };

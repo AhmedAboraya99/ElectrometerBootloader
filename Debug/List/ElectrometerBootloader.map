@@ -1,0 +1,170 @@
+###############################################################################
+#
+# IAR ELF Linker V8.22.1.15669/W32 for ARM                20/Jul/2025  12:09:57
+# Copyright 2007-2018 IAR Systems AB.
+#
+#    Output file  =  
+#        C:\Users\Ahmed.AboRaya\Documents\ElectrometerBootloader\Debug\Exe\ElectrometerBootloader.out
+#    Map file     =  
+#        C:\Users\Ahmed.AboRaya\Documents\ElectrometerBootloader\Debug\List\ElectrometerBootloader.map
+#    Command line =  
+#        -f C:\Users\AHMED~1.ABO\AppData\Local\Temp\EWE465.tmp
+#        (C:\Users\Ahmed.AboRaya\Documents\ElectrometerBootloader\Debug\Obj\core_app.o
+#        C:\Users\Ahmed.AboRaya\Documents\ElectrometerBootloader\Debug\Obj\main.o
+#        C:\Users\Ahmed.AboRaya\Documents\ElectrometerBootloader\Debug\Obj\module1.o
+#        C:\Users\Ahmed.AboRaya\Documents\ElectrometerBootloader\Debug\Obj\module2.o
+#        -o
+#        C:\Users\Ahmed.AboRaya\Documents\ElectrometerBootloader\Debug\Exe\ElectrometerBootloader.out
+#        --map
+#        C:\Users\Ahmed.AboRaya\Documents\ElectrometerBootloader\Debug\List\ElectrometerBootloader.map
+#        --config
+#        C:\Users\Ahmed.AboRaya\Documents\ElectrometerBootloader\linker\v85xx.icf
+#        --semihosting --entry __iar_program_start --vfe --text_out locale)
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor       = *
+__SystemLibrary = DLib
+__dlib_version  = 6
+
+
+*******************************************************************************
+*** HEAP SELECTION
+***
+
+The basic heap was selected because no calls to memory allocation
+functions were found in the application outside of system library
+functions, and there are calls to deallocation functions in the
+application.
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A0":  place at 0x00000000 { section .intvec };
+"P1":  place in [from 0x00000000 to 0x0003ffff] |
+                [from 0x00040000 to 0x00040fff] |
+                [from 0x000fff00 to 0x000fffff] {
+          ro, section .text, section .rodata };
+define block CSTACK with size = 2K, alignment = 8 { };
+"P2":  place in [from 0x20000000 to 0x20007fff] { rw, block CSTACK };
+define block HEAP with size = 1K, alignment = 8 { };
+"P3":  place in [from 0x20000000 to 0x20007fff] { block HEAP };
+
+No sections matched the following patterns:
+
+  rw                     in "P2-P3"
+  section .bootloader    in "A1"
+  section .core_app      in "A3"
+  section .fetched_code  in "A4"
+  section .jump_table    in "A2"
+  section .rodata        in "P1"
+
+
+  Section   Kind        Address   Size  Object
+  -------   ----        -------   ----  ------
+"A0":                             0x40
+  .intvec   ro code  0x00000000   0x40  vector_table_M.o [4]
+                   - 0x00000040   0x40
+
+"P1":                             0xf8
+  .text     ro code  0x00000040   0x9e  main.o [1]
+  .text     ro code  0x000000de    0x2  vector_table_M.o [4]
+  .text     ro code  0x000000e0   0x1e  cmain.o [4]
+  .text     ro code  0x000000fe    0x4  low_level_init.o [3]
+  .text     ro code  0x00000102    0x8  exit.o [3]
+  .text     ro code  0x0000010c    0xa  cexit.o [4]
+  .text     ro code  0x00000118   0x14  exit.o [5]
+  .text     ro code  0x0000012c    0xc  cstartup_M.o [4]
+                   - 0x00000138   0xf8
+
+"P2-P3":                         0x800
+  CSTACK             0x20000000  0x800  <Block>
+    CSTACK  uninit   0x20000000  0x800  <Block tail>
+                   - 0x20000800  0x800
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module            ro code  rw data
+    ------            -------  -------
+C:\Users\Ahmed.AboRaya\Documents\ElectrometerBootloader\Debug\Obj: [1]
+    main.o                158
+    ----------------------------------
+    Total:                158
+
+command line: [2]
+    ----------------------------------
+    Total:
+
+dl6M_tln.a: [3]
+    exit.o                  8
+    low_level_init.o        4
+    ----------------------------------
+    Total:                 12
+
+rt6M_tl.a: [4]
+    cexit.o                10
+    cmain.o                30
+    cstartup_M.o           12
+    vector_table_M.o       66
+    ----------------------------------
+    Total:                118
+
+shb_l.a: [5]
+    exit.o                 20
+    ----------------------------------
+    Total:                 20
+
+    Gaps                    4
+    Linker created               2 048
+--------------------------------------
+    Grand Total:          312    2 048
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                      Address  Size  Type      Object
+-----                      -------  ----  ----      ------
+?main                   0x000000e1        Code  Gb  cmain.o [4]
+CSTACK$$Base            0x20000000         --   Gb  - Linker created -
+CSTACK$$Limit           0x20000800         --   Gb  - Linker created -
+Region$$Table$$Base     0x00000000         --   Gb  - Linker created -
+Region$$Table$$Limit    0x00000000         --   Gb  - Linker created -
+__cmain                 0x000000e1        Code  Gb  cmain.o [4]
+__exit                  0x00000119  0x14  Code  Gb  exit.o [5]
+__iar_program_start     0x0000012d        Code  Gb  cstartup_M.o [4]
+__iar_systems$$module {Abs}
+                        0x00000001        Data  Gb  command line/config [2]
+__low_level_init        0x000000ff   0x4  Code  Gb  low_level_init.o [3]
+__vector_table          0x00000000        Data  Gb  vector_table_M.o [4]
+_call_main              0x000000ed        Code  Gb  cmain.o [4]
+_exit                   0x0000010d        Code  Gb  cexit.o [4]
+_main                   0x000000fb        Code  Gb  cmain.o [4]
+exit                    0x00000103   0x8  Code  Gb  exit.o [3]
+main                    0x000000cd  0x12  Code  Gb  main.o [1]
+spi_flash_init          0x00000059  0x56  Code  Gb  main.o [1]
+system_clock_init       0x00000041  0x18  Code  Gb  main.o [1]
+
+
+[1] = C:\Users\Ahmed.AboRaya\Documents\ElectrometerBootloader\Debug\Obj
+[2] = command line
+[3] = dl6M_tln.a
+[4] = rt6M_tl.a
+[5] = shb_l.a
+
+    312 bytes of readonly  code memory
+  2 048 bytes of readwrite data memory
+
+Errors: none
+Warnings: none

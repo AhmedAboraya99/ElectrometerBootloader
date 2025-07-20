@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <fileVersion>2</fileVersion>
+    <fileChecksum>1994059863</fileChecksum>
+    <configuration>
+        <name>Debug</name>
+        <outputs>
+            <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\bootloader.o</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\module2.pbi</file>
+            <file>D:\Electrometer\src\jump_table.h</file>
+            <file>$PROJ_DIR$\Debug\List\ElectrometerBootloader.map</file>
+            <file>$PROJ_DIR$\Debug\Obj\module2.o</file>
+            <file>$TOOLKIT_DIR$\inc\c\iccarm_builtin.h</file>
+            <file>$PROJ_DIR$\linker\stm32f401cc.icf</file>
+            <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+            <file>D:\Electrometer\src\module1.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\module2.__cstat.et</file>
+            <file>D:\Electrometer\src\bootloader.c</file>
+            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+            <file>D:\Electrometer\src\module2.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\module1.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+            <file>D:\Electrometer\main.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\core_app.pbi</file>
+            <file>D:\Electrometer\stm32cube\main.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\ElectrometerBootloader.pbd</file>
+            <file>$PROJ_DIR$\Debug\Obj\bootloader.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\module1.__cstat.et</file>
+            <file>D:\Electrometer\src\core_app.c</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+            <file>$PROJ_DIR$\stm32cube\main.c</file>
+            <file>D:\Electrometer\settings\Electrometer.Debug.driver.xcl</file>
+            <file>$PROJ_DIR$\src\bootloader.c</file>
+            <file>D:\Electrometer\settings\Electrometer.dnx</file>
+            <file>$PROJ_DIR$\src\module2.c</file>
+            <file>D:\Electrometer\settings\Electrometer.dbgdt</file>
+            <file>$PROJ_DIR$\scripts\generate_config_table.py</file>
+            <file>D:\Electrometer\Makefile</file>
+            <file>$PROJ_DIR$\Debug\Obj\bootloader.__cstat.et</file>
+            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+            <file>$PROJ_DIR$\Debug\Exe\ElectrometerBootloader.out</file>
+            <file>$PROJ_DIR$\Debug\Obj\core_app.o</file>
+            <file>D:\Electrometer\linker\stm32f401cc.icf</file>
+            <file>$PROJ_DIR$\src\core_app.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\core_app.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\module1.pbi</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.__cstat.et</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+            <file>D:\Electrometer\settings\Electrometer.crun</file>
+            <file>$PROJ_DIR$\src\module1.c</file>
+            <file>D:\Electrometer\linker\module.icf</file>
+            <file>D:\Electrometer\settings\Electrometer.Debug.cspy.bat</file>
+            <file>D:\Electrometer\settings\Electrometer.Debug.cspy.ps1</file>
+            <file>D:\Electrometer\settings\Electrometer.Debug.general.xcl</file>
+            <file>$PROJ_DIR$\src\jump_table.h</file>
+            <file>$PROJ_DIR$\linker\v85xx.icf</file>
+            <file>$TOOLKIT_DIR$\lib\dl6M_tln.a</file>
+            <file>$TOOLKIT_DIR$\lib\m6M_tl.a</file>
+            <file>$TOOLKIT_DIR$\lib\rt6M_tl.a</file>
+            <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
+        </outputs>
+        <file>
+            <name>D:\Electrometer\src\module1.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 43</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 18</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 25</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 46 16 3 37 6 2 44</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 6 3 16 37 46 2 44</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>D:\Electrometer\src\bootloader.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 24</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 1</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 36</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 16 46 3 37 6 2 44</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 6 3 16 37 46 2 44</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>D:\Electrometer\src\module2.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 5</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 8</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 14</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 46 16 3 37 6 2 44</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 6 3 16 37 46 2 44</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>D:\Electrometer\main.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 19</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 4</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 45</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>D:\Electrometer\stm32cube\main.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 19</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>D:\Electrometer\src\core_app.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 21</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 39</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 42</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 16 46 0 3 37 11 2 44 12 27 9 6</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 6 3 16 37 46 2 44 11 12 27 0 9</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\stm32cube\main.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 19</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 4</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 45</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 3 46 16 37 53 2 44</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 53 3 16 37 46 2 44</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\bootloader.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 24</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 1</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 36</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 16 46 3 37 53 2 44</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 53 3 16 37 46 2 44</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\module2.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 5</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 8</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 14</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 46 16 3 37 53 2 44</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 53 3 16 37 46 2 44</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Debug\Exe\ElectrometerBootloader.out</name>
+            <outputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 7</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 54 39 4 18 8 58 57 56 55</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\core_app.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 21</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 39</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 42</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 16 46 0 3 37 11 2 44 12 27 9 53</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 53 3 16 37 46 2 44 11 12 27</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\module1.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 43</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 18</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 25</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 46 16 3 37 53 2 44</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 53 3 16 37 46 2 44</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>[ROOT_NODE]</name>
+            <outputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 38 7</file>
+                </tool>
+            </outputs>
+        </file>
+    </configuration>
+    <configuration>
+        <name>Release</name>
+        <outputs />
+        <forcedrebuild>
+            <name>[MULTI_TOOL]</name>
+            <tool>ILINK</tool>
+        </forcedrebuild>
+    </configuration>
+</project>

@@ -1,0 +1,43 @@
+
+//define symbol iar_program_start = bootloader_main;
+
+/* === 1) Define a single memory block covering both Flash and SRAM ===
+   We start the block at 0x0800 0000 (start of on-chip flash) and give it
+   enough size to reach 0x2001 0000 (end of our 32 KB SRAM at 0x2000 0000). */
+     
+define memory MEMORY_ALL with size = 0x40000000;  
+
+/* === 2) Carve out two regions inside that block === */
+define region FLASH_region = MEMORY_ALL:[from 0x00000000 to 0x00040000];  /* 256 KB */
+define region RAM_region   = MEMORY_ALL:[from 0x20000000 to 0x20008000];  /*  32 KB */
+
+/* === 3) (Optional) Override the reset-handler symbol here, or let your C code
+      provide it.  If you do define it here, make sure ‘bootloader_main’ is
+      actually a global C symbol (extern "C") in your project. */
+
+/* === 4) Place the exception vector table right at the start of flash === */
+place at address 0x08000000 { section .intvec };
+
+/* === 5) Place your four custom flash sections === */
+place at address 0x08000000              { section .bootloader   };
+place at address 0x08001000              { section .jump_table   };
+place at address 0x08001100              { section .core_app     };
+place at address 0x08002000              { section .fetched_code };
+
+/* === 6) All other code and read-only data go into the remainder of flash === */
+place in FLASH_region { readonly, section .text, section .rodata };
+
+/* === 7) Initialize .data, zero .bss, and carve out your stack in RAM === */
+initialize by copy { section .data };
+do not initialize   { section .bss    };
+
+/* simple 4 KB stack block (adjust as needed) */
+define symbol __CSTACK_SIZE__ = 0x00001000;
+define block CSTACK with alignment = 8, size = __CSTACK_SIZE__ { };
+place in RAM_region { readwrite, block CSTACK };
+
+/* === 8) (Optional) If you need a heap, you can add it here: ===
+   define symbol __HEAP_SIZE__ = 0x00002000;    // e.g. 8 KB
+   define block HEAP with alignment = 8, size = __HEAP_SIZE__ { };
+   place in RAM_region { block HEAP };  
+*/
