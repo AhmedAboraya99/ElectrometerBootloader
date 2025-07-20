@@ -1,2 +1,2 @@
 # ElectrometerBootloader
-Bootloader tool for effecient using of Internal Flash
+Bootloader to optimize the internal flash usage of a MCU
