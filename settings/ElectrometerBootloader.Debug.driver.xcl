@@ -4,13 +4,7 @@
 
 "--fpu=None" 
 
-"-p" 
-
-"D:\ProgramFiles\IAR Systems\Embedded Workbench 8.0\arm\CONFIG\debugger\VANGO\V85XX.ddf" 
-
 "--semihosting" 
-
-"--device=V85XX" 
 
 "--multicore_nr_of_cores=1" 
 

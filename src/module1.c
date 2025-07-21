@@ -14,3 +14,9 @@ void toggle_led(JumpTable *jt, uint32_t param) {
     delay_ms(100);
     jt->set_led(0);
 }
+
+
+int read_sensor(void) {
+    // Placeholder: Return sensor data for Module 1 (UART, GPIO)
+    return 42;
+}

@@ -1,36 +1,29 @@
 #ifndef JUMP_TABLE_H
 #define JUMP_TABLE_H
-
 #include <stdint.h>
 
-// Jump table for peripheral access
 typedef struct {
-    void (*uart_print)(const char *msg); // USART2 print
-    void (*set_led)(uint8_t state);      // PC13 LED
-    int (*read_sensor)(void);            // Dummy sensor
-    void (*format_data)(char *buffer, int data); // Format data
+    void (*uart_print)(const char *msg);
+    void (*set_led)(uint8_t state);
+    void (*timer_init)(void);
+    void (*adc_init)(void);
+    int (*read_sensor)(void);
+    void (*format_data)(char *buffer, int data);
 } JumpTable;
 
-// Function pointer type
-typedef void (*module_function_ptr)(void *jump_table, uint32_t param);
-
-// Function metadata
 typedef struct {
-    uint32_t func_index;     // Function index
-    char func_name[16];      // Function name (15 chars + null)
-    uint32_t offset;         // Offset in external flash
-    uint32_t size;           // Function code size
-    uint32_t crc;            // CRC32 of function
+    char func_name[16];
+    uint32_t offset; // Virtual address
+    uint32_t size;
+    uint32_t crc;
+    uint32_t peripheral; // Peripheral dependency (e.g., 1: UART, 2: GPIO, 3: Timer, 4: ADC)
 } FunctionInfo;
 
-// Module metadata
 typedef struct {
-    uint32_t module_id;      // Module ID
-    uint32_t address;        // External flash address
-    uint32_t size;           // Module size
-    uint32_t crc;            // Module CRC32
-    uint32_t func_count;     // Number of functions
-    FunctionInfo functions[20]; // Function metadata (max 20)
+    uint32_t module_id;
+    uint32_t address; // Virtual address (0x10000000 for Module 1, 0x10004000 for Module 2)
+    uint32_t func_count;
+    FunctionInfo functions[10];
 } ModuleInfo;
 
 #endif

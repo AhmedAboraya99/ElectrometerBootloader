@@ -1,4 +1,4 @@
-"C:\Users\Ahmed.AboRaya\Documents\ElectrometerBootloader\src\module1.c"
+"C:\Users\Ahmed.AboRaya\Documents\ElectrometerBootloader\src\shared.c"
 -std=c11
 -ferror-limit=0
 -fbracket-depth=512

@@ -292,11 +292,11 @@
                 </option>
                 <option>
                     <name>IExtraOptionsCheck</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IExtraOptions</name>
-                    <state></state>
+                    <state>--no_inline</state>
                 </option>
                 <option>
                     <name>CCLangConformance</name>
@@ -380,11 +380,11 @@
                 </option>
                 <option>
                     <name>CCPosIndRopi</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCPosIndRwpi</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCPosIndNoDynInit</name>
@@ -2039,6 +2039,9 @@
         </settings>
     </configuration>
     <group>
+        <name>build</name>
+    </group>
+    <group>
         <name>linker</name>
         <file>
             <name>D:\Electrometer\linker\module.icf</name>
@@ -2089,6 +2092,9 @@
             <name>$PROJ_DIR$\src\jump_table.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\src\main.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\src\module1.c</name>
         </file>
         <file>
@@ -2096,9 +2102,6 @@
         </file>
     </group>
     <file>
-        <name>$PROJ_DIR$\stm32cube\main.c</name>
-    </file>
-    <file>
-        <name>D:\Electrometer\Makefile</name>
+        <name>$PROJ_DIR$\Makefile</name>
     </file>
 </project>

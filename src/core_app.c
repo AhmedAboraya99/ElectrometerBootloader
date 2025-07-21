@@ -1,158 +1,113 @@
+#include <stdint.h>
 #include "jump_table.h"
-#include <string.h>
 
-// V85XX register definitions (based on provided memory map)
-#define RCC_BASE        0x40014000 // PMU (assumed for clock control)
-#define GPIOB_BASE      0x40000020 // GPIOB
-#define GPIOC_BASE      0x40000040 // GPIOC
-#define UART0_BASE      0x40011800 // UART0
+// Placeholder V85XX registers
+#define GPIO_BASE       0x40020000
+#define GPIO_PB_IDR     (*(volatile uint32_t *)(GPIO_BASE + 0x10))
+#define GPIO_PC_ODR     (*(volatile uint32_t *)(GPIO_BASE + 0x114))
+#define UART0_BASE      0x40011000
+#define UART0_DR        (*(volatile uint32_t *)(UART0_BASE + 0x00))
+#define FLASH_BASE      0x40022000
+#define FLASH_KEYR      (*(volatile uint32_t *)(FLASH_BASE + 0x04))
 
-#define RCC_AHBENR      (*(volatile uint32_t *)(RCC_BASE + 0x10)) // AHB enable (adjust offset)
-#define RCC_APB1ENR     (*(volatile uint32_t *)(RCC_BASE + 0x14)) // APB1 enable (adjust offset)
-#define GPIOB_MODER     (*(volatile uint32_t *)(GPIOB_BASE + 0x00)) // Mode register
-#define GPIOC_MODER     (*(volatile uint32_t *)(GPIOC_BASE + 0x00)) // Mode register
-#define GPIOC_ODR       (*(volatile uint32_t *)(GPIOC_BASE + 0x14)) // Output data
-#define GPIOB_IDR       (*(volatile uint32_t *)(GPIOB_BASE + 0x10)) // Input data
-#define UART0_SR        (*(volatile uint32_t *)(UART0_BASE + 0x00)) // Status
-#define UART0_DR        (*(volatile uint32_t *)(UART0_BASE + 0x04)) // Data
-#define UART0_BRR       (*(volatile uint32_t *)(UART0_BASE + 0x08)) // Baud rate
-#define UART0_CR1       (*(volatile uint32_t *)(UART0_BASE + 0x0C)) // Control 1
+#define TRACE_ENABLED // Enable function tracing (disable in production)
 
-// Memory addresses
-#define CONFIG_TABLE_ADDRESS 0x00000000
-#define FETCHED_CODE_ADDRESS 0x00002000
+#ifdef TRACE_ENABLED
+static uint32_t trace_buffer[16]; // Store up to 16 function addresses
+static uint32_t trace_index = 0;
 
-// Function declarations
-extern void spi_flash_read(uint32_t address, uint8_t *buffer, uint32_t length);
-extern int fetch_function(uint32_t ext_address, uint32_t offset, uint32_t int_address, uint32_t size, uint32_t expected_crc);
-extern int fetch_got_plt(uint32_t ext_address, uint32_t got_offset, uint32_t got_size, uint32_t plt_offset, uint32_t plt_size);
-void delay_ms(uint32_t ms);
-uint32_t get_tick(void);
+// Shared peripheral functions (in .shared section)
+void uart_print(const char *msg);
+void set_led(uint8_t state);
+void timer_init(void);
+void adc_init(void);
+void format_data(char *buffer, int data);
 
-// Initialize UART0 (PB1: TX, adjust pin per V85XX manual)
-void uart_init(void) {
-    RCC_AHBENR |= (1U << 1); // Enable GPIOB clock
-    RCC_APB1ENR |= (1U << 0); // Enable UART0 clock (adjust)
-    GPIOB_MODER &= ~(0x3U << 2); // Clear PB1
-    GPIOB_MODER |= (2U << 2); // PB1 alternate function
-    // Adjust alternate function per V85XX manual (e.g., AF0 for UART0)
-    UART0_BRR = 0x36; // 115200 baud at 6.5 MHz (adjust: 6500000 / 115200 ˜ 56.4)
-    UART0_CR1 = (1U << 13) | (1U << 3); // UE=1, TE=1
-}
-
-// UART print
-void uart_print(const char *msg) {
-    while (*msg) {
-        while (!(UART0_SR & (1U << 7))); // Wait for TXE
-        UART0_DR = *msg++;
+void trace_function(void *func_addr) {
+    if (trace_index < 16) {
+        trace_buffer[trace_index++] = (uint32_t)func_addr;
+        char buffer[32];
+        format_data(buffer, (int)func_addr);
+        uart_print("Trace: Function at 0x");
+        uart_print(buffer);
     }
 }
+#endif
 
-// Set LED (PC0, adjust pin)
-void set_led(uint8_t state) {
-    GPIOC_ODR = state ? 0 : (1U << 0); // PC0 output (active low, adjust)
-}
+// From bootloader.c
+void spi_flash_read(uint32_t addr, uint8_t *buffer, uint32_t len);
+uint32_t calc_crc(uint8_t *data, uint32_t len);
 
-// Dummy sensor
-int read_sensor(void) {
-    return 42;
-}
-
-// Format data
-void format_data(char *buffer, int data) {
-    char *p = buffer;
-    *p++ = 'S'; *p++ = 'e'; *p++ = 'n'; *p++ = 's'; *p++ = 'o'; *p++ = 'r'; *p++ = ':';
-    *p++ = ' ';
-    int val = data;
-    if (val < 0) { *p++ = '-'; val = -val; }
-    char digits[10];
-    int i = 0;
-    do { digits[i++] = (val % 10) + '0'; val /= 10; } while (val);
-    while (i--) *p++ = digits[i];
-    *p++ = '\n';
-    *p = '\0';
-}
-
-// Execute function
-void execute_function(uint32_t code_address, JumpTable *jt, uint32_t param) {
-    void (*func)(JumpTable *, uint32_t) = (void (*)(JumpTable *, uint32_t))(code_address + 1);
-    func(jt, param);
-}
-
-// Core application
 void core_application(void) {
-    RCC_AHBENR |= (1U << 1) | (1U << 2); // Enable GPIOB, GPIOC clocks
-    GPIOB_MODER &= ~(0x3U << 0); // PB0 input (button)
-    GPIOC_MODER &= ~(0x3U << 0); // Clear PC0
-    GPIOC_MODER |= (1U << 0); // PC0 output (LED)
-    uart_init();
+    // Read config table from external flash
+    ModuleInfo config_table[2];
+    spi_flash_read(0x00000000, (uint8_t *)config_table, sizeof(config_table));
 
-    JumpTable jump_table = {uart_print, set_led, read_sensor, format_data};
-    ModuleInfo config[20];
-    uint32_t module_id = 0;
-    uint32_t func_index = 0;
-    uint8_t press_count = 0;
-    uint32_t last_press = 0;
+    JumpTable jt = { uart_print, set_led, timer_init, adc_init, 0, format_data };
+    uint32_t selected_module = 0;
+    uint32_t selected_func = 0;
 
-    spi_flash_read(CONFIG_TABLE_ADDRESS, (uint8_t *)config, sizeof(config));
-    
     while (1) {
-        if (!(GPIOB_IDR & (1U << 0)) && (get_tick() - last_press > 200)) {
-            press_count++;
-            last_press = get_tick();
-            
-            if (press_count == 1) {
-                module_id = (module_id % 2) + 1;
-                char msg[32];
-                format_data(msg, module_id);
-                uart_print("Selected module ");
-                uart_print(msg);
-            } else if (press_count == 2) {
-                for (int i = 0; i < 20; i++) {
-                    if (config[i].module_id == module_id) {
-                        func_index = (func_index % config[i].func_count) + 1;
-                        char msg[32];
-                        strncpy(msg, config[i].functions[func_index - 1].func_name, 15);
-                        msg[15] = '\0';
-                        uart_print("Selected function ");
-                        uart_print(msg);
-                        uart_print("\n");
-                        break;
+        // Check button press (PB0, assumed)
+        if (GPIO_PB_IDR & (1 << 0)) {
+            if (selected_module == 0) {
+                selected_module = 1; // Select Module 1
+                jt.uart_print("Selected module 1");
+            } else if (selected_func == 0) {
+                selected_func = 1; // Select process_data or read_sensor
+                jt.uart_print("Selected function");
+            } else {
+                // Load and execute function
+                ModuleInfo *mod = &config_table[selected_module - 1];
+                FunctionInfo *func = &mod->functions[selected_func - 1];
+                uint8_t buffer[1024];
+
+                // Check peripheral dependency
+                if (func->peripheral & 0x4) { // Requires Timer
+                    jt.timer_init();
+                }
+                if (func->peripheral & 0x8) { // Requires ADC
+                    jt.adc_init();
+                }
+
+                // Map virtual to physical address
+                uint32_t physical_addr = func->offset - 0x10000000 + (selected_module == 1 ? 0x00001000 : 0x00004000);
+                spi_flash_read(physical_addr, buffer, func->size);
+
+                // Verify CRC
+                if (calc_crc(buffer, func->size) == func->crc) {
+                    // Unlock flash
+                    FLASH_KEYR = 0x45670123;
+                    FLASH_KEYR = 0xCDEF89AB;
+
+                    // Write to 0x00002000 (overlay)
+                    uint32_t *dest = (uint32_t *)0x00002000;
+                    for (uint32_t i = 0; i < func->size / 4; i++) {
+                        dest[i] = ((uint32_t *)buffer)[i];
+                    }
+
+                    // Execute function
+                    void (*func_ptr)(JumpTable *, uint32_t) = (void (*)(JumpTable *, uint32_t))0x00002000;
+                    #ifdef TRACE_ENABLED
+                    trace_function((void *)func_ptr);
+                    #endif
+                    func_ptr(&jt, selected_module);
+
+                    // Reset selection
+                    selected_module = 0;
+                    selected_func = 0;
+                } else {
+                    // Error: Blink LED (PC0)
+                    for (int i = 0; i < 10; i++) {
+                        jt.set_led(1);
+                        for (volatile int j = 0; j < 500000; j++);
+                        jt.set_led(0);
+                        for (volatile int j = 0; j < 500000; j++);
                     }
                 }
-            } else if (press_count == 3) {
-                for (int i = 0; i < 20; i++) {
-                    if (config[i].module_id == module_id) {
-                        FunctionInfo *func = &config[i].functions[func_index - 1];
-                        if (fetch_function(config[i].address, func->offset, FETCHED_CODE_ADDRESS, func->size, func->crc) &&
-                            fetch_got_plt(config[i].address, 0x1000, 100, 0x1064, 50)) {
-                            execute_function(FETCHED_CODE_ADDRESS, &jump_table, module_id);
-                        } else {
-                            uart_print("Function load failed\n");
-                            while (1) { set_led(1); delay_ms(250); set_led(0); delay_ms(250); }
-                        }
-                        break;
-                    }
-                }
-                press_count = 0;
             }
-        } else if (press_count > 0 && get_tick() - last_press > 1000) {
-            press_count = 0;
+            // Debounce
+            for (volatile int i = 0; i < 100000; i++);
         }
-        delay_ms(10);
     }
-}
-
-// Delay (approximate, 6.5 MHz)
-void delay_ms(uint32_t ms) {
-    for (uint32_t i = 0; i < ms * 6500; i++) {
-        __NOP();
-    }
-}
-
-// System tick (approximate)
-uint32_t get_tick(void) {
-    static uint32_t ticks = 0;
-    ticks += 10; // 10ms per loop
-    return ticks;
 }

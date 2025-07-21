@@ -7,3 +7,4 @@ void other_func(JumpTable *jt, uint32_t param) {
     jt->uart_print("Other function for module ");
     jt->uart_print(buffer);
 }
+

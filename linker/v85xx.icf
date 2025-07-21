@@ -33,6 +33,6 @@ place in FLASH_region { readonly, section .text, section .rodata };
 initialize by copy { section .data };
 do not initialize { section .bss };
 define block CSTACK with alignment = 8, size = __CSTACK_SIZE__ { };
-place in SRAM_region { readwrite, block CSTACK };
+place in SRAM_region { readwrite, block CSTACK, section .got, section .plt };
 define block HEAP with alignment = 8, size = __HEAP_SIZE__ { };
 place in SRAM_region { block HEAP };
